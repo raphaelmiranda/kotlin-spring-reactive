@@ -37,11 +37,6 @@ class PostRepository(private val client: DatabaseClient) {
                     .matching(Criteria.where("id").`is`(id))
                     .fetch()
                     .awaitOneOrNull()
-//            client.execute("SELECT * FROM posts WHERE id = \$1")
-//                    .bind(0, id)
-//                    .asType<Post>()
-//                    .fetch()
-//                    .awaitOneOrNull()
 
     suspend fun deleteById(id: Long): Int =
             client.execute("DELETE FROM posts WHERE id = \$1")
@@ -56,7 +51,6 @@ class PostRepository(private val client: DatabaseClient) {
                     .fetch()
                     .rowsUpdated()
                     .awaitSingle()
-    //client.execute("DELETE FROM posts").fetch().rowsUpdated().awaitSingle()
 
     suspend fun save(post: Post) =
             client.insert()
@@ -79,19 +73,4 @@ class PostRepository(private val client: DatabaseClient) {
                     .rowsUpdated()
                     .awaitSingle()
 
-//            client.execute("UPDATE posts SET title = \$2, content = \$3 WHERE id = \$1")
-//                    .bind(0, post.id!!)
-//                    .bind(1, post.title!!)
-//                    .bind(2, post.content!!)
-//                    .fetch()
-//                    .rowsUpdated()
-//                    .awaitSingle()
-
-    suspend fun init() {
-        //client.execute().sql("CREATE TABLE IF NOT EXISTS posts (login varchar PRIMARY KEY, firstname varchar, lastname varchar);").await()
-        val deletedCount = deleteAll()
-        println(" $deletedCount posts deleted!")
-        save(Post(title = "My first post title", content = "Content of my first post"))
-        save(Post(title = "My second post title", content = "Content of my second post"))
-    }
 }
